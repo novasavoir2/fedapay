@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Acheter mon Ebook</title>
+    <!-- Chargement de FedaPay -->
+    <script src="https://cdn.fedapay.com/checkout.js?v=1.1.7"></script>
+</head>
+<body style="text-align: center; font-family: sans-serif; padding-top: 50px;">
+
+    <h1>Mon Super Ebook</h1>
+    <p>Prix : <strong>5 500 FCFA</strong></p>
+
+    <!-- Le bouton de paiement -->
+    <button id="bouton-payer" style="padding: 15px 30px; background: green; color: white; font-size: 18px; border: none; border-radius: 5px; cursor: pointer;">
+        Acheter maintenant
+    </button>
+
+    <script>
+        // VOTRE CLÉ PUBLIQUE LIVE
+        const PUBLIC_KEY = 'pk_live_CoLnKdUzwo059EqXDngEruTw';
+
+        // Initialisation du bouton
+        FedaPay.init('#bouton-payer', {
+            public_key: PUBLIC_KEY,
+            transaction: {
+                amount: 5500, // Le prix mis à jour : 5 500 FCFA
+                description: 'Achat de mon Ebook'
+            },
+            // Redirection après paiement réussi
+            redirect_url: 'merci.html'
+        });
+    </script>
+</body>
+</html>
