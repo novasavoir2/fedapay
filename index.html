@@ -3,32 +3,54 @@
 <head>
     <meta charset="UTF-8">
     <title>Acheter mon Ebook</title>
-    <!-- Chargement de FedaPay -->
     <script src="https://cdn.fedapay.com/checkout.js?v=1.1.7"></script>
+    <style>
+        body { text-align: center; font-family: sans-serif; padding-top: 50px; }
+        .bouton { padding: 15px 30px; background: green; color: white; font-size: 18px; border: none; border-radius: 5px; cursor: pointer; }
+        /* On cache la zone de téléchargement au début */
+        #zone-telechargement { display: none; margin-top: 30px; padding: 20px; background: #e0ffe0; border: 2px solid green; border-radius: 10px; }
+    </style>
 </head>
-<body style="text-align: center; font-family: sans-serif; padding-top: 50px;">
+<body>
 
     <h1>Mon Super Ebook</h1>
-    <p>Prix : <strong>5 500 FCFA</strong></p>
+    <p>Prix : <strong>100 FCFA</strong></p>
 
     <!-- Le bouton de paiement -->
-    <button id="bouton-payer" style="padding: 15px 30px; background: green; color: white; font-size: 18px; border: none; border-radius: 5px; cursor: pointer;">
+    <button id="bouton-payer" class="bouton">
         Acheter maintenant
     </button>
 
+    <!-- Cette zone apparaîtra SEULEMENT si le paiement réussit -->
+    <div id="zone-telechargement">
+        <h2>✅ Paiement Réussi !</h2>
+        <p>Merci pour votre achat. Cliquez ci-dessous pour télécharger.</p>
+        <a href="ebook.pdf" download style="display: inline-block; padding: 15px 30px; background: blue; color: white; text-decoration: none; font-size: 18px; border-radius: 5px; margin-top: 10px;">
+            📥 Télécharger le PDF
+        </a>
+    </div>
+
     <script>
-        // VOTRE CLÉ PUBLIQUE LIVE
         const PUBLIC_KEY = 'pk_live_CoLnKdUzwo059EqXDngEruTw';
 
-        // Initialisation du bouton
-        FedaPay.init('#bouton-payer', {
+        // 1. Initialiser le bouton FedaPay
+        const checkout = FedaPay.init('#bouton-payer', {
             public_key: PUBLIC_KEY,
             transaction: {
-                amount: 5500, // Le prix mis à jour : 5 500 FCFA
+                amount: 100,
                 description: 'Achat de mon Ebook'
-            },
-            // Redirection après paiement réussi
-            redirect_url: 'merci.html'
+            }
+        });
+
+        // 2. LA LIGNE MAGIQUE : Écouter le succès du paiement
+        checkout.on('payment.success', function(response) {
+            console.log("Paiement réussi !", response);
+            
+            // Cacher le bouton d'achat
+            document.getElementById('bouton-payer').style.display = 'none';
+            
+            // Afficher la zone de téléchargement
+            document.getElementById('zone-telechargement').style.display = 'block';
         });
     </script>
 </body>
